@@ -1,0 +1,57 @@
+---
+title: "Amazon_stock_analysis"
+author: "Daniel Jung"
+date: "4/20/2020"
+output: html_document
+---
+
+## Front Matter
+
+```{r}
+# clean up workspace environment
+rm(list = ls())
+# all packages used for the assignment
+library(mosaicData)
+library(DataComputing)
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+library(lubridate)
+```
+
+# Amazon stock price data (1997 ~ 2020)
+```{r}
+amzn <- read.csv("AMZN.csv")
+```
+
+# Make date data as date data type
+```{r}
+amzn$Date <- as.Date(amzn$Date)
+```
+
+# Line graph on stock price data
+```{r}
+ggplot(amzn, aes(x = Date, y = Close)) + geom_line()
+```
+
+# Mutate about whether close price increased or decreased compared to yesterday
+```{r}
+amzn <- amzn %>%
+          mutate(Change = (Close - lag(Close))/lag(Close)*100)
+
+amzn$Change[1] <- 0
+```
+
+# Get three more columns "Year", "Month", "Day"
+```{r}
+year_high_low <- amzn %>%
+                    mutate(year = as.numeric(format(amzn$Date, format = "%Y"))) %>% mutate(month = as.numeric(format(amzn$Date, format = "%m"))) %>% mutate(day = as.numeric(format(amzn$Date, format = "%d")))
+```
+
+# Get year high and year low closing price
+```{r}
+year_high_low %>%
+  group_by(year) %>%
+  summarise(year_high = max(Close), year_low = min(Close))
+```
+
