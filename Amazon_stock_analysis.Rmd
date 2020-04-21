@@ -44,14 +44,136 @@ amzn$Change[1] <- 0
 
 # Get three more columns "Year", "Month", "Day"
 ```{r}
-year_high_low <- amzn %>%
-                    mutate(year = as.numeric(format(amzn$Date, format = "%Y"))) %>% mutate(month = as.numeric(format(amzn$Date, format = "%m"))) %>% mutate(day = as.numeric(format(amzn$Date, format = "%d")))
+amzn <- amzn %>%
+          mutate(year = as.numeric(format(amzn$Date, format = "%Y"))) %>% mutate(month = as.numeric(format(amzn$Date, format = "%m"))) %>% mutate(day = as.numeric(format(amzn$Date, format = "%d")))
 ```
 
 # Get year high and year low closing price
 ```{r}
-year_high_low %>%
-  group_by(year) %>%
-  summarise(year_high = max(Close), year_low = min(Close))
+year_high_low <- amzn %>%
+                    group_by(year) %>%
+                    summarise(year_high = max(Close), year_low = min(Close))
+```
+
+# Join two data frame
+```{r}
+amzn <- amzn %>%
+          left_join(year_high_low)
+```
+
+# Get the rows that were year high and year low
+```{r}
+year_high_low_history <- amzn %>%
+                            filter(Close == year_high | Close == year_low)
+```
+
+# Row number of rows that have year high or year low
+```{r}
+which(amzn$Close == amzn$year_high)
+```
+
+# Get rows from 5 days before to 5 days after for each year-high rows
+```{r}
+high1 <- amzn$Change[112:122]
+high2 <- amzn$Change[409-5:409+5]
+high3 <- amzn$Change[650-5:650+5]
+high4 <- amzn$Change[665-5:665+5]
+high5 <- amzn$Change[932-5:932+5]
+high6 <- amzn$Change[1392-5:1392+5]
+high7 <- amzn$Change[1614-5:1614+5]
+high8 <- amzn$Change[1616-5:1616+5]
+high9 <- amzn$Change[1682-5:1682+5]
+high10 <- amzn$Change[2160-5:2160+5]
+high11 <- amzn$Change[2176-5:2176+5]
+high12 <- amzn$Change[2627-5:2627+5]
+high13 <- amzn$Change[2675-5:2675+5]
+high14 <- amzn$Change[3159-5:3159+5]
+high15 <- amzn$Change[3425-5:3425+5]
+high16 <- amzn$Change[3630-5:3630+5]
+high17 <- amzn$Change[3864-5:3864+5]
+high18 <- amzn$Change[4182-5:4182+5]
+high19 <- amzn$Change[4198-5:4198+5]
+high20 <- amzn$Change[4687-5:4687+5]
+high21 <- amzn$Change[4881-5:4881+5]
+high22 <- amzn$Change[5169-5:5169+5]
+high23 <- amzn$Change[5362-5:5362+5]
+high24 <- amzn$Change[5577-5:5577+5]
+high25 <- amzn$Change[5768-5:5768+5]
+```
+
+# Ten days before and after year-high
+```{r}
+five_before_after <- data.frame()
+five_before_after <- rbind(five_before_after, high1, high2, high3, high4, high5, high6, high7, high8, high9, high10, high11, high12, high13, high14, high15, high16, high17, high18, high19, high20, high21, high22, high23, high24, high25)
+
+colnames(five_before_after) <- c("five_before", "four_before", "three_before", "two_before", "one_before", "the_day", "one_after", "two_after", "three_after", "four_after", "five_after")
+
+five_before_after <- five_before_after[,1:11]
+```
+
+# Five days before
+```{r}
+ggplot(five_before_after, aes(x = five_before)) + geom_density(color = "steelblue", fill = "steelblue") + xlim(-20, 20) + theme_light()
+```
+
+# Four days before
+```{r}
+ggplot(five_before_after, aes(x = four_before)) + geom_density(color = "steelblue", fill = "steelblue") + xlim(-20, 20) + theme_light()
+```
+
+# Three days before
+```{r}
+ggplot(five_before_after, aes(x = three_before)) + geom_density(color = "steelblue", fill = "steelblue") + xlim(-20, 20) + theme_light()
+```
+
+# Two days before
+```{r}
+ggplot(five_before_after, aes(x = two_before)) + geom_density(color = "steelblue", fill = "steelblue") + xlim(-20, 20) + theme_light()
+```
+
+# one days before
+```{r}
+ggplot(five_before_after, aes(x = one_before)) + geom_density(color = "steelblue", fill = "steelblue") + xlim(-20, 20) + theme_light()
+```
+
+# The day
+```{r}
+ggplot(five_before_after, aes(x = the_day)) + geom_density(color = "steelblue", fill = "steelblue") + xlim(-20, 20) + theme_light()
+```
+
+# One day after
+```{r}
+ggplot(five_before_after, aes(x = one_after)) + geom_density(color = "steelblue", fill = "steelblue") + xlim(-20, 20) + theme_light()
+```
+
+# Two days after
+```{r}
+ggplot(five_before_after, aes(x = two_after)) + geom_density(color = "steelblue", fill = "steelblue") + xlim(-20, 20) + theme_light()
+```
+
+# Three days after
+```{r}
+ggplot(five_before_after, aes(x = three_after)) + geom_density(color = "steelblue", fill = "steelblue") + xlim(-20, 20) + theme_light()
+```
+
+# Four days after
+```{r}
+ggplot(five_before_after, aes(x = four_after)) + geom_density(color = "steelblue", fill = "steelblue") + xlim(-20, 20) + theme_light()
+```
+
+# Five days after
+```{r}
+ggplot(five_before_after, aes(x = five_after)) + geom_density(color = "steelblue", fill = "steelblue") + xlim(-20, 20) + theme_light()
+```
+
+# Gather data frame to make box plot
+```{r}
+five_box_plot <- five_before_after %>%
+                    pivot_longer(cols = c("five_before", "four_before", "three_before", "two_before", "one_before", "the_day", "one_after", "two_after", "three_after", "four_after", "five_after"), names_to = "when")
+```
+
+# How does boxplot differ by days before and after year-high days
+```{r}
+ggplot(five_box_plot, aes(x = when, y = value)) + geom_boxplot()
 ```
 
