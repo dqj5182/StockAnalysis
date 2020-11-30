@@ -121,7 +121,7 @@ outcome but also the method of clustering.
 Lee, J., Kim, J. (2017, Mar 6). 10 year stock investing earnings… Foreigner
 78%, Retail investor -74%.
 Retrieved from https://biz.chosun.com/site/data/html_dir/2017/03/06/
-2017030602584.html
+2017030602584.html/n
 Scikit Learn. (2019). Imputation of missing values.
 Retrieved from https://scikit-learn.org/stable/modules/impute.html
 Scikit Learn (2019). sklearn.model_selection.GridSearchCV.
